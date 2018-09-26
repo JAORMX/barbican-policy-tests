@@ -51,7 +51,7 @@ In this scenario we change Barbican's observer role and replace it with
 **policy-reader.json**. In order to run a container that takes this policy into
 use, you need to run the **run-barbican-with-reader-policy.sh** script.
 
-To verify that this works, do the following::
+To verify that this works, do the following:
 
 ```bash
 # run the container
@@ -67,4 +67,38 @@ create-secret.sh
 # Attempt to list the available secrets with the observer role. This
 # operation should fail.
 ./list-secrets.sh observer
+```
+
+Note that if you want to try out the next scenario, you need to stop the
+container.
+
+Remove audit role
+-----------------
+
+Barbican's audit role is meant to only read a very minimal set of things from
+the barbican's entities. For some, this role might not be very useful, so lets
+delete it!
+
+The policy file that's used in this scenario is **policy-remove-audit.json**,
+and in order to run a container that takes this into use, use the
+**run-barbican-without-audit-policy.sh** script.
+
+To verify that this works, do the following:
+
+```bash
+# run the container
+run-barbican-without-audit-policy.sh
+
+# create a secret
+create-secret.sh
+
+# Attempt to view the secret metadata with the creator role. This
+# operation should succeed.
+curl -H 'X-Project-Id: 1234' -H 'X-Roles: creator' \
+    http://localhost:9311/v1/secrets/<some ID> | python -m json.tool
+
+# Attempt to view the secret metadata with the creator role. This
+# operation should fail.
+curl -H 'X-Project-Id: 1234' -H 'X-Roles: audit' \
+    http://localhost:9311/v1/secrets/<some ID> | python -m json.tool
 ```
