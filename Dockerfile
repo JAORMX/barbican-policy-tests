@@ -1,4 +1,4 @@
-FROM kolla/centos-binary-barbican-api:7.0.0
+FROM kolla/centos-binary-barbican-api:master
 
 USER barbican
 
