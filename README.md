@@ -97,7 +97,7 @@ create-secret.sh
 curl -H 'X-Project-Id: 1234' -H 'X-Roles: creator' \
     http://localhost:9311/v1/secrets/<some ID> | python -m json.tool
 
-# Attempt to view the secret metadata with the creator role. This
+# Attempt to view the secret metadata with the audit role. This
 # operation should fail.
 curl -H 'X-Project-Id: 1234' -H 'X-Roles: audit' \
     http://localhost:9311/v1/secrets/<some ID> | python -m json.tool
